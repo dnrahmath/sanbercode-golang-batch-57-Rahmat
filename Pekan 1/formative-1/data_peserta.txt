@@ -1,0 +1,11 @@
+Data Peserta Bootcamp Digital Skill - Golang Backend Development
+1. Nama: Dwi Nanda Rahmat Herlambang
+2. Email: dn.rahmath@gmail.com
+3. Sistem Operasi yang digunakan: Windows
+4. Akun Github: https://github.com/dnrahmath/
+5. Akun Telegram: https://t.me/dnrahmath
+6. Role Pekerjaan (BE/FE/DEVOPS/MAHASISWA) : MAHASISWA
+7. Umur: 23
+8. Pernah menggunakan Go? : Pernah
+9. Bahasa Pemrograman yg pernah dipelajari: Golang dan Dart
+10. Pernah membuat REST API? : Pernah
