@@ -9,14 +9,14 @@
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "program": "./Pekan 1/tugas-2/soal.go",
+            "program": "./Pekan 1/tugas-3/jawaban.go",
         },
         {
             "name": "P1-tgs4",
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "program": "./Pekan 1/tugas-4/soal.go",
+            "program": "./Pekan 1/tugas-4/jawaban.go",
         }
     ]
 }
