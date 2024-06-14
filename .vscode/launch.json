@@ -5,11 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "pekan1-tugas2",
+            "name": "P1-tgs3",
             "type": "go",
             "request": "launch",
             "mode": "auto",
             "program": "./Pekan 1/tugas-2/soal.go",
+        },
+        {
+            "name": "P1-tgs4",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "./Pekan 1/tugas-4/soal.go",
         }
     ]
 }
