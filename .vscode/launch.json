@@ -17,6 +17,13 @@
             "request": "launch",
             "mode": "auto",
             "program": "./Pekan 1/tugas-4/jawaban.go",
+        },
+        {
+            "name": "P1-tgs5",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "./Pekan 1/tugas-5/jawaban.go",
         }
     ]
 }
