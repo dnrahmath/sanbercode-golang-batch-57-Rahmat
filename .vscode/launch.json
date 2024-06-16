@@ -5,6 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "coba-shorting-childofid",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "./ujiCoba/shorting-childofid.go",
+        },
+        {
             "name": "P1-tgs3",
             "type": "go",
             "request": "launch",
