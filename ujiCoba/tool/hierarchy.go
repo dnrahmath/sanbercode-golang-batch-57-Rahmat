@@ -2,74 +2,68 @@ package tool
 
 import (
 	"encoding/json"
-	"fmt"
-	pl "ujicoba/payload"
+	"log"
 )
 
 // Node represents a node in the hierarchy
 type Node struct {
-	UuId     string  `json:"uuid"`
-	Name     string  `json:"name,omitempty"`
-	Children []*Node `json:"children,omitempty"`
+	UuId        string      `json:"uuid"`
+	Data        interface{} `json:"data,omitempty"`
+	ChildOfUuid string      `json:"childofuuid"`
+	Children    []*Node     `json:"children,omitempty"`
 }
 
-func BuildHierarchy(data []byte, dataIner interface{}) map[string]*Node {
-	var items []pl.Data1 // or Data2, depending on input
+// ConvertByteToListMap converts JSON byte data to a list of maps
+func ConvertByteToListMap(data []byte) []map[string]interface{} {
+	var items []map[string]interface{}
 
 	err := json.Unmarshal(data, &items)
 	if err != nil {
-		fmt.Println("Error parsing JSON:", err)
+		log.Println("Error parsing JSON:", err)
 		return nil
 	}
 
+	return items
+}
+
+// BuildHierarchy builds a hierarchy of nodes based on input items
+func BuildHierarchy(items []map[string]interface{}) []*Node {
 	nodeMap := make(map[string]*Node)
+	var rootNodes []*Node
 
+	// Step 1: Create nodes for each item and store them in the node map
 	for _, item := range items {
-		// Check if node already exists in nodeMap
-		if _, exists := nodeMap[item.UuId]; !exists {
-			node := &Node{
-				UuId: item.UuId,
-				Name: item.Name,
-			}
-			nodeMap[item.UuId] = node
+		uuid, ok := item["uuid"].(string)
+		if !ok {
+			log.Println("Missing or invalid uuid in item:", item)
+			continue
 		}
 
-		// Check if child node already exists in nodeMap
-		if item.Childofuuid != "" {
-			if _, exists := nodeMap[item.Childofuuid]; !exists {
-				childNode := &Node{
-					UuId: item.Childofuuid,
-				}
-				nodeMap[item.Childofuuid] = childNode
-			}
+		// Create a new node
+		node := &Node{
+			UuId:        uuid,
+			Data:        item["data"],
+			ChildOfUuid: item["childofuuid"].(string), // assuming childofuuid is always present
+			Children:    []*Node{},
+		}
+
+		// Store node in map
+		nodeMap[uuid] = node
+	}
+
+	// Step 2: Link child nodes to their parent nodes
+	for _, node := range nodeMap {
+		parentUUID := node.ChildOfUuid
+		if parentUUID == node.UuId {
+			// Skip if node is its own parent (to prevent circular reference)
+			rootNodes = append(rootNodes, node)
+		} else if parentNode, exists := nodeMap[parentUUID]; exists {
+			parentNode.Children = append(parentNode.Children, node)
+		} else {
+			// If no parent node exists (root node), add to rootNodes
+			rootNodes = append(rootNodes, node)
 		}
 	}
 
-	// Link children
-	for _, item := range items {
-		if item.Childofuuid != "" {
-			parentNode, parentExists := nodeMap[item.Childofuuid]
-			childNode, childExists := nodeMap[item.UuId]
-
-			if parentExists && childExists {
-				parentNode.Children = append(parentNode.Children, childNode)
-			}
-		}
-	}
-
-	// Remove nodes without valid parents from nodeMap
-	for _, item := range items {
-		if item.Childofuuid == "" {
-			delete(nodeMap, item.UuId)
-		}
-	}
-
-	// Remove nodes that have no parent
-	for uuid, node := range nodeMap {
-		if node.Children == nil {
-			delete(nodeMap, uuid)
-		}
-	}
-
-	return nodeMap
+	return rootNodes
 }
