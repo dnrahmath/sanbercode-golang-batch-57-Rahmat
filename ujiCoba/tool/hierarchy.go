@@ -7,13 +7,13 @@ import (
 
 // Node represents a node in the hierarchy
 type Node struct {
-	UuId        string      `json:"uuid"`
-	Data        interface{} `json:"data,omitempty"`
-	ChildOfUuid string      `json:"childofuuid"`
-	Children    []*Node     `json:"children,omitempty"`
+	UuId     string      `json:"uuid"`
+	Data     interface{} `json:"data,omitempty"`
+	Conf     interface{} `json:"conf,omitempty"`
+	Children []*Node     `json:"children,omitempty"`
 }
 
-// ConvertByteToListMap converts JSON byte data to a list of maps
+// ConvertByteToListMap converts JSON byte data to a map
 func ConvertByteToListMap(data []byte) []map[string]interface{} {
 	var items []map[string]interface{}
 
@@ -41,10 +41,10 @@ func BuildHierarchy(items []map[string]interface{}) []*Node {
 
 		// Create a new node
 		node := &Node{
-			UuId:        uuid,
-			Data:        item["data"],
-			ChildOfUuid: item["childofuuid"].(string), // assuming childofuuid is always present
-			Children:    []*Node{},
+			UuId:     uuid,
+			Data:     item["data"],
+			Conf:     item["conf"],
+			Children: []*Node{},
 		}
 
 		// Store node in map
@@ -53,7 +53,9 @@ func BuildHierarchy(items []map[string]interface{}) []*Node {
 
 	// Step 2: Link child nodes to their parent nodes
 	for _, node := range nodeMap {
-		parentUUID := node.ChildOfUuid
+		conf := node.Conf.(map[string]interface{})
+		parentUUID := conf["childofuuid"].(string)
+
 		if parentUUID == node.UuId {
 			// Skip if node is its own parent (to prevent circular reference)
 			rootNodes = append(rootNodes, node)
