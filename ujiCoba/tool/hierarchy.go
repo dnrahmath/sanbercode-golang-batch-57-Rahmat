@@ -3,6 +3,8 @@ package tool
 import (
 	"encoding/json"
 	"log"
+	"sort"
+	"strconv"
 )
 
 // Node represents a node in the hierarchy
@@ -13,7 +15,7 @@ type Node struct {
 	Children []*Node     `json:"children,omitempty"`
 }
 
-// ConvertByteToListMap converts JSON byte data to a map
+// ConvertByteToListMap converts JSON byte data to a list of maps
 func ConvertByteToListMap(data []byte) []map[string]interface{} {
 	var items []map[string]interface{}
 
@@ -39,11 +41,24 @@ func BuildHierarchy(items []map[string]interface{}) []*Node {
 			continue
 		}
 
+		// Parse conf data dynamically
+		conf := item["conf"]
+
+		// Check if conf is a map[string]interface{} type
+		if confMap, ok := conf.(map[string]interface{}); ok {
+			if idxStr, ok := confMap["index"].(string); ok {
+				_, err := strconv.Atoi(idxStr)
+				if err != nil {
+					log.Println("Invalid index value:", idxStr, err)
+				}
+			}
+		}
+
 		// Create a new node
 		node := &Node{
 			UuId:     uuid,
 			Data:     item["data"],
-			Conf:     item["conf"],
+			Conf:     conf,
 			Children: []*Node{},
 		}
 
@@ -53,8 +68,13 @@ func BuildHierarchy(items []map[string]interface{}) []*Node {
 
 	// Step 2: Link child nodes to their parent nodes
 	for _, node := range nodeMap {
-		conf := node.Conf.(map[string]interface{})
-		parentUUID := conf["childofuuid"].(string)
+		confMap, ok := node.Conf.(map[string]interface{})
+		if !ok {
+			log.Println("Invalid conf format for node:", node.UuId)
+			continue
+		}
+
+		parentUUID := confMap["childofuuid"].(string)
 
 		if parentUUID == node.UuId {
 			// Skip if node is its own parent (to prevent circular reference)
@@ -67,5 +87,30 @@ func BuildHierarchy(items []map[string]interface{}) []*Node {
 		}
 	}
 
+	// Sort children of each parent node based on index
+	for _, node := range nodeMap {
+		sort.Slice(node.Children, func(i, j int) bool {
+			return getIndex(node.Children[i]) < getIndex(node.Children[j])
+		})
+	}
+
+	// Sort root nodes based on index
+	sort.Slice(rootNodes, func(i, j int) bool {
+		return getIndex(rootNodes[i]) < getIndex(rootNodes[j])
+	})
+
 	return rootNodes
+}
+
+// getIndex extracts the index from node's Conf if possible, or returns 0
+func getIndex(node *Node) int {
+	if confMap, ok := node.Conf.(map[string]interface{}); ok {
+		if idxStr, ok := confMap["index"].(string); ok {
+			idx, err := strconv.Atoi(idxStr)
+			if err == nil {
+				return idx
+			}
+		}
+	}
+	return 0
 }
