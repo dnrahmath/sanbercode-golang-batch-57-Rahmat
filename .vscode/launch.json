@@ -5,13 +5,6 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "ujiCoba",
-            "type": "go",
-            "request": "launch",
-            "mode": "auto",
-            "program": "./ujiCoba/main.go",
-        },
-        {
             "name": "P1-tgs3",
             "type": "go",
             "request": "launch",
@@ -38,6 +31,20 @@
             "request": "launch",
             "mode": "auto",
             "program": "./Pekan 2/formative-6/main.go",
+        },
+        {
+            "name": "P1-formative-7",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "./Pekan 2/formative-7/main.go",
+        },
+        {
+            "name": "ujiCoba",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "./ujiCoba/main.go",
         },
     ]
 }
