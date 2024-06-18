@@ -31,6 +31,13 @@
             "request": "launch",
             "mode": "auto",
             "program": "./Pekan 1/tugas-5/jawaban.go",
-        }
+        },
+        {
+            "name": "P1-formative-6",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "./Pekan 2/formative-6/main.go",
+        },
     ]
 }
