@@ -86,30 +86,35 @@ func Soal3() {
 
 // ===================================================================================================
 // soal 4
-var dataFilm = []map[string]string{}
+// Catatan: perubahan untuk dipelajari kembali
+func funcClosure() func(genre string, jam string, tahun string, title string) []map[string]string {
+	var dataFilm = []map[string]string{}
 
-func tambahDataFilm(genre string, jam string, tahun string, title string) []map[string]string {
-	film := map[string]string{
-		"genre": genre,
-		"jam":   jam,
-		"tahun": tahun,
-		"title": title,
+	return func(genre string, jam string, tahun string, title string) []map[string]string {
+		film := map[string]string{
+			"genre": genre,
+			"jam":   jam,
+			"tahun": tahun,
+			"title": title,
+		}
+
+		dataFilm = append(dataFilm, film)
+
+		return dataFilm
 	}
-
-	dataFilm = append(dataFilm, film)
-
-	return dataFilm
 }
 
 func Soal4() {
-	fmt.Println("--Soal 4--------------------------------------")
-	tambahDataFilm("LOTR", "2 jam", "action", "1999")
-	tambahDataFilm("avenger", "2 jam", "action", "2019")
-	tambahDataFilm("spiderman", "2 jam", "action", "2004")
-	tambahDataFilm("juon", "2 jam", "horror", "2004")
+	// Membuat instance closure untuk mengelola data film
+	tambahDataFilm := funcClosure()
 
-	for _, item := range dataFilm {
-		fmt.Println(item)
+	// Menambah data film menggunakan closure
+	dataFilm := tambahDataFilm("Action", "14:00", "2024", "Film A")
+	dataFilm = tambahDataFilm("Drama", "16:00", "2023", "Film B")
+
+	// Menampilkan data film
+	for _, film := range dataFilm {
+		fmt.Println("Title:", film["title"], "Genre:", film["genre"], "Jam:", film["jam"], "Tahun:", film["tahun"])
 	}
 }
 
