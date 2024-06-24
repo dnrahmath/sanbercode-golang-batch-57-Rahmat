@@ -14,6 +14,7 @@ func hitung(w http.ResponseWriter, r *http.Request) {
 	volume := math.Pi * math.Pow(jariJari, 2) * tinggi
 	luasAlas := math.Pi * math.Pow(jariJari, 2)
 	kelilingAlas := 2 * math.Pi * jariJari
+
 	fmt.Fprintf(w, "jariJari: %.2f, tinggi: %.2f, volume: %.2f, luas alas: %.2f, keliling alas: %.2f",
 		jariJari, tinggi, volume, luasAlas, kelilingAlas)
 }
