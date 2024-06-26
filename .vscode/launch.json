@@ -79,7 +79,7 @@
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "program": "./Pekan 3/formative-13/main.go",
+            "program": "./Pekan 3/formative-13/belajar-gin/main.go",
         },
         {
             "name": "P1-formative-14",
