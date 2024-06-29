@@ -96,6 +96,13 @@
             "program": "./Pekan 3/formative-15/main.go",
         },
         {
+            "name": "Quiz-3",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "./Pekan 1/formative-1/Quiz-3/main.go",
+        },
+        {
             "name": "ujiCoba",
             "type": "go",
             "request": "launch",

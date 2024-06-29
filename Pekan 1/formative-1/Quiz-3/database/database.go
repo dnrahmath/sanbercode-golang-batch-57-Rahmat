@@ -2,9 +2,9 @@ package database
 
 import (
 	"database/sql"
+	"embed"
 	"fmt"
 
-	"github.com/gobuffalo/packr/v2"
 	migrate "github.com/rubenv/sql-migrate"
 )
 
@@ -12,9 +12,14 @@ var (
 	DbConnection *sql.DB
 )
 
+//go:embed sql_migrations/*.sql
+var dbMigrations embed.FS
+
 func DbMigrate(dbParam *sql.DB) {
-	migrations := &migrate.PackrMigrationSource{
-		Box: packr.New("migrations", "./sql_migrations"),
+
+	migrations := &migrate.EmbedFileSystemMigrationSource{
+		FileSystem: dbMigrations,
+		Root:       "sql_migrations",
 	}
 
 	n, errs := migrate.Exec(dbParam, "postgres", migrations, migrate.Up)

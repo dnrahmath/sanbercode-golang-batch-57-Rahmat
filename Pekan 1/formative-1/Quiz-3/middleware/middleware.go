@@ -14,7 +14,12 @@ func Auth() gin.HandlerFunc {
 			return
 		}
 
-		if uname == "admin" && pwd == "password" || uname == "editor" && pwd == "secret" {
+		if uname == "admin" && pwd == "password" {
+			c.Next()
+			return
+		}
+
+		if uname == "editor" && pwd == "secret" {
 			c.Next()
 			return
 		}

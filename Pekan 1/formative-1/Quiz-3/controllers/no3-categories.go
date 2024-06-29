@@ -42,7 +42,7 @@ func InsertCategories(c *gin.Context) {
 		panic(err)
 	}
 
-	err = repository.InsertCategories(database.DbConnection, Categories)
+	err = repository.InsertCategory(database.DbConnection, Categories)
 	if err != nil {
 		panic(err)
 	}
@@ -65,7 +65,7 @@ func UpdateCategories(c *gin.Context) {
 
 	Categories.ID = int(id)
 
-	err = repository.UpdateCategories(database.DbConnection, Categories)
+	err = repository.UpdateCategory(database.DbConnection, Categories)
 	if err != nil {
 		panic(err)
 	}
@@ -83,7 +83,7 @@ func DeleteCategories(c *gin.Context) {
 
 	Categories.ID = int(id)
 
-	err := repository.DeleteCategories(database.DbConnection, Categories)
+	err := repository.DeleteCategory(database.DbConnection, Categories)
 	if err != nil {
 		panic(err)
 	}

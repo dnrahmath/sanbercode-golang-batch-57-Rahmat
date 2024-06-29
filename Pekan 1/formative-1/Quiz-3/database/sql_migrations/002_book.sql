@@ -1,19 +1,6 @@
 -- +migrate Up
 -- +migrate StatementBegin
 
-CREATE TABLE person {
-    id BIGINT NOT NULL,
-    first_name VARCHAR(256),
-    last_name VARCHAR(256)
-}
-
-CREATE TABLE category (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(256) NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-
 CREATE TABLE book (
     id SERIAL PRIMARY KEY,
     title VARCHAR(256) NOT NULL,
